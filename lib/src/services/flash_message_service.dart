@@ -1,6 +1,8 @@
 import 'dart:async';
+
 import 'package:flash_message/src/enums/message_type.dart';
 import 'package:flutter/material.dart';
+
 import '../models/flash_message_model.dart';
 
 /// Service to manage flash messages
@@ -40,6 +42,11 @@ class FlashMessageService {
         onTap: onTap,
       ));
     }
+  }
+
+  void clearMessages() {
+    _controller.close();
+    _controller.sink.close();
   }
 
   /// Disposes of the service
