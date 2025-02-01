@@ -1,5 +1,7 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
+
 import '../models/flash_message_model.dart';
 import '../services/flash_message_service.dart';
 import 'flash_message_widget.dart';
@@ -33,8 +35,7 @@ class FlashMessageOverlay extends StatefulWidget {
 
 /// State class for `FlashMessageOverlay` widget.
 /// Manages the display and animation of flash messages.
-class _FlashMessageOverlayState extends State<FlashMessageOverlay>
-    with SingleTickerProviderStateMixin {
+class _FlashMessageOverlayState extends State<FlashMessageOverlay> with SingleTickerProviderStateMixin, WidgetsBindingObserver {
   OverlayEntry? _overlayEntry;
   Timer? _timer;
   late AnimationController _animationController;
@@ -44,6 +45,7 @@ class _FlashMessageOverlayState extends State<FlashMessageOverlay>
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     _animationController = AnimationController(
       duration: const Duration(milliseconds: 300),
       vsync: this,
@@ -111,8 +113,7 @@ class _FlashMessageOverlayState extends State<FlashMessageOverlay>
       case FlashMessagePosition.top:
         return MediaQuery.of(context).padding.top + 16;
       case FlashMessagePosition.center:
-        return (MediaQuery.of(context).size.height - 100) /
-            2; // Approximate message height
+        return (MediaQuery.of(context).size.height - 100) / 2; // Approximate message height
       case FlashMessagePosition.bottom:
         return null;
     }
@@ -158,10 +159,20 @@ class _FlashMessageOverlayState extends State<FlashMessageOverlay>
   /// Disposes the animation controller and other resources.
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     _timer?.cancel();
     _overlayEntry?.remove();
     _animationController.dispose();
     super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.paused || state == AppLifecycleState.detached) {
+      _timer?.cancel();
+      _overlayEntry?.remove();
+      _overlayEntry = null;
+    }
   }
 
   /// Builds the widget tree.
