@@ -35,7 +35,8 @@ class FlashMessageOverlay extends StatefulWidget {
 
 /// State class for `FlashMessageOverlay` widget.
 /// Manages the display and animation of flash messages.
-class _FlashMessageOverlayState extends State<FlashMessageOverlay> with SingleTickerProviderStateMixin, WidgetsBindingObserver {
+class _FlashMessageOverlayState extends State<FlashMessageOverlay>
+    with SingleTickerProviderStateMixin, WidgetsBindingObserver {
   OverlayEntry? _overlayEntry;
   Timer? _timer;
   late AnimationController _animationController;
@@ -113,7 +114,8 @@ class _FlashMessageOverlayState extends State<FlashMessageOverlay> with SingleTi
       case FlashMessagePosition.top:
         return MediaQuery.of(context).padding.top + 16;
       case FlashMessagePosition.center:
-        return (MediaQuery.of(context).size.height - 100) / 2; // Approximate message height
+        return (MediaQuery.of(context).size.height - 100) /
+            2; // Approximate message height
       case FlashMessagePosition.bottom:
         return null;
     }
@@ -168,7 +170,8 @@ class _FlashMessageOverlayState extends State<FlashMessageOverlay> with SingleTi
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state == AppLifecycleState.paused || state == AppLifecycleState.detached) {
+    if (state == AppLifecycleState.paused ||
+        state == AppLifecycleState.detached) {
       _timer?.cancel();
       _overlayEntry?.remove();
       _overlayEntry = null;

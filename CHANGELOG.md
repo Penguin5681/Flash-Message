@@ -35,3 +35,7 @@ Initial release by [@Penguin5681](https://github.com/Penguin5681) 🎉
 ### Notes
 - First public release
 - Tested on Flutter stable channel
+
+## 0.0.2 (2025-02-01 11:04:34 UTC)
+
+- Added a new method to manually clear up any leftover overlays
